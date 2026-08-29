@@ -10,7 +10,7 @@ public class ExpenseRecord {
 			throw new IllegalArgumentException();
 		}
 
-		if (description.isEmpty()) {
+		if (description.trim().isEmpty()) {
 			throw new IllegalArgumentException();
 		}
 	}
