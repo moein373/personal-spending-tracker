@@ -21,4 +21,10 @@ public class ExpenseRecordTest {
 
 		assertNotNull(expense);
 	}
+
+	@Test
+	public void constructorWithNegativeAmountShouldThrow() {
+		assertThrows(IllegalArgumentException.class,
+				() -> new ExpenseRecord("Lunch", -1.0, "Food", LocalDate.of(2026, 8, 29)));
+	}
 }
