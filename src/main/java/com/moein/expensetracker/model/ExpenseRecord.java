@@ -9,5 +9,9 @@ public class ExpenseRecord {
 		if (amount <= 0.0) {
 			throw new IllegalArgumentException();
 		}
+
+		if (description.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 	}
 }
