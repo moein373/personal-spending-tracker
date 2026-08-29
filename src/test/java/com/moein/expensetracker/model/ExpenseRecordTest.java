@@ -1,6 +1,7 @@
 package com.moein.expensetracker.model;
 
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDate;
 
@@ -12,5 +13,12 @@ public class ExpenseRecordTest {
 	public void constructorWithZeroAmountShouldThrow() {
 		assertThrows(IllegalArgumentException.class,
 				() -> new ExpenseRecord("Lunch", 0.0, "Food", LocalDate.of(2026, 8, 29)));
+	}
+
+	@Test
+	public void constructorWithPositiveAmountShouldCreateExpenseRecord() {
+		ExpenseRecord expense = new ExpenseRecord("Lunch", 12.50, "Food", LocalDate.of(2026, 8, 29));
+
+		assertNotNull(expense);
 	}
 }
