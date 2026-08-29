@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class ExpenseRecord {
 
 	private String description;
+	private double amount;
 
 	public ExpenseRecord(String description, double amount, String category, LocalDate date) {
 
@@ -17,9 +18,14 @@ public class ExpenseRecord {
 		}
 
 		this.description = description;
+		this.amount = amount;
 	}
 
 	public String getDescription() {
 		return description;
+	}
+
+	public double getAmount() {
+		return amount;
 	}
 }
