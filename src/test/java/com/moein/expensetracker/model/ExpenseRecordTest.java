@@ -2,6 +2,7 @@ package com.moein.expensetracker.model;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 
@@ -44,5 +45,12 @@ public class ExpenseRecordTest {
 	public void constructorWithNullDescriptionShouldThrow() {
 		assertThrows(IllegalArgumentException.class,
 				() -> new ExpenseRecord(null, 10.0, "Food", LocalDate.of(2026, 8, 29)));
+	}
+
+	@Test
+	public void constructorShouldStoreDescription() {
+		ExpenseRecord expense = new ExpenseRecord("Lunch", 12.50, "Food", LocalDate.of(2026, 8, 29));
+
+		assertEquals("Lunch", expense.getDescription());
 	}
 }
