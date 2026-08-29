@@ -6,6 +6,7 @@ public class ExpenseRecord {
 
 	private String description;
 	private double amount;
+	private String category;
 
 	public ExpenseRecord(String description, double amount, String category, LocalDate date) {
 
@@ -19,6 +20,7 @@ public class ExpenseRecord {
 
 		this.description = description;
 		this.amount = amount;
+		this.category = category;
 	}
 
 	public String getDescription() {
@@ -27,5 +29,9 @@ public class ExpenseRecord {
 
 	public double getAmount() {
 		return amount;
+	}
+
+	public String getCategory() {
+		return category;
 	}
 }
