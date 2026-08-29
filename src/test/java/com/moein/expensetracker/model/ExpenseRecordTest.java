@@ -39,4 +39,10 @@ public class ExpenseRecordTest {
 		assertThrows(IllegalArgumentException.class,
 				() -> new ExpenseRecord("   ", 10.0, "Food", LocalDate.of(2026, 8, 29)));
 	}
+
+	@Test
+	public void constructorWithNullDescriptionShouldThrow() {
+		assertThrows(IllegalArgumentException.class,
+				() -> new ExpenseRecord(null, 10.0, "Food", LocalDate.of(2026, 8, 29)));
+	}
 }
