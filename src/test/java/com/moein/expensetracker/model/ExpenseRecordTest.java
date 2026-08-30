@@ -76,4 +76,12 @@ public class ExpenseRecordTest {
 
 		assertEquals(date, expense.getDate());
 	}
+
+	@Test
+	public void constructorShouldStoreId() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Lunch", 12.50, "Food", LocalDate.of(2026, 8, 30));
+
+		assertEquals("1", expense.getId());
+	}
+
 }
