@@ -54,4 +54,11 @@ public class ExpenseServiceTest {
 
 		assertEquals(expense, expenseService.getExpenseById("1"));
 	}
+
+	@Test
+	public void deleteExpenseShouldDeleteExpenseFromRepository() {
+		expenseService.deleteExpense("1");
+
+		verify(expenseRepository).delete("1");
+	}
 }
