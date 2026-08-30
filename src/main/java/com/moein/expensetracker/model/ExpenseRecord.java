@@ -51,4 +51,5 @@ public class ExpenseRecord {
 	public LocalDate getDate() {
 		return date;
 	}
+	
 }

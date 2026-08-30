@@ -1,14 +1,13 @@
 package com.moein.expensetracker.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-
-import java.time.LocalDate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,5 +44,14 @@ public class ExpenseServiceTest {
 		when(expenseRepository.findAll()).thenReturn(expenses);
 
 		assertEquals(expenses, expenseService.getAllExpenses());
+	}
+
+	@Test
+	public void getExpenseByIdShouldReturnExpenseFromRepository() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Lunch", 12.50, "Food", LocalDate.of(2026, 8, 30));
+
+		when(expenseRepository.findById("1")).thenReturn(expense);
+
+		assertEquals(expense, expenseService.getExpenseById("1"));
 	}
 }

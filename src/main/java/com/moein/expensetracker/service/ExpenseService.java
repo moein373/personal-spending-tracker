@@ -20,4 +20,8 @@ public class ExpenseService {
 	public List<ExpenseRecord> getAllExpenses() {
 		return expenseRepository.findAll();
 	}
+
+	public ExpenseRecord getExpenseById(String id) {
+		return expenseRepository.findById(id);
+	}
 }

@@ -1,8 +1,8 @@
 package com.moein.expensetracker.model;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
 
@@ -83,14 +83,4 @@ public class ExpenseRecordTest {
 
 		assertEquals("1", expense.getId());
 	}
-
-	@Test
-	public void getExpenseByIdShouldReturnExpenseFromRepository() {
-		ExpenseRecord expense = new ExpenseRecord("1", "Lunch", 12.50, "Food", LocalDate.of(2026, 8, 30));
-
-		when(expenseRepository.findById("1")).thenReturn(expense);
-
-		assertEquals(expense, expenseService.getExpenseById("1"));
-	}
-
 }
