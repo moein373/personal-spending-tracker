@@ -11,4 +11,6 @@ public interface ExpenseRepository {
 	List<ExpenseRecord> findAll();
 
 	ExpenseRecord findById(String id);
+
+	void delete(String id);
 }

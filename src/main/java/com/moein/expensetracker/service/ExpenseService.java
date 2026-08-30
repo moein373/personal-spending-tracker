@@ -24,4 +24,8 @@ public class ExpenseService {
 	public ExpenseRecord getExpenseById(String id) {
 		return expenseRepository.findById(id);
 	}
+
+	public void deleteExpense(String id) {
+		expenseRepository.delete(id);
+	}
 }
