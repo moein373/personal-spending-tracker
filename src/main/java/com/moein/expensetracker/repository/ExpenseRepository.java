@@ -13,4 +13,6 @@ public interface ExpenseRepository {
 	ExpenseRecord findById(String id);
 
 	void delete(String id);
+
+	void update(ExpenseRecord expense);
 }

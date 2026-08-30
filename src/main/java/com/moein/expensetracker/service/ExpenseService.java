@@ -28,4 +28,8 @@ public class ExpenseService {
 	public void deleteExpense(String id) {
 		expenseRepository.delete(id);
 	}
+
+	public void updateExpense(ExpenseRecord expense) {
+		expenseRepository.update(expense);
+	}
 }
