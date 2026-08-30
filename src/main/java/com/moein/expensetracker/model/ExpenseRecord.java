@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class ExpenseRecord {
 
+	private String id;
 	private String description;
 	private double amount;
 	private String category;
@@ -23,6 +24,16 @@ public class ExpenseRecord {
 		this.amount = amount;
 		this.category = category;
 		this.date = date;
+	}
+
+	public ExpenseRecord(String id, String description, double amount, String category, LocalDate date) {
+
+		this(description, amount, category, date);
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
 	}
 
 	public String getDescription() {
