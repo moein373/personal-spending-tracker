@@ -61,4 +61,13 @@ public class ExpenseServiceTest {
 
 		verify(expenseRepository).delete("1");
 	}
+
+	@Test
+	public void updateExpenseShouldUpdateExpenseInRepository() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Dinner", 25.00, "Food", LocalDate.of(2026, 8, 30));
+
+		expenseService.updateExpense(expense);
+
+		verify(expenseRepository).update(expense);
+	}
 }
