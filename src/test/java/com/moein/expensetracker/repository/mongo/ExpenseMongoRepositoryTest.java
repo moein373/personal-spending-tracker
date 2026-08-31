@@ -124,4 +124,16 @@ public class ExpenseMongoRepositoryTest {
 
 		assertEquals(null, expense);
 	}
+
+	@Test
+	public void deleteShouldRemoveExpenseFromDatabase() {
+		expenseCollection.insertOne(new Document().append("id", "1").append("description", "Lunch")
+				.append("amount", 12.50).append("category", "Food").append("date", "2026-08-31"));
+
+		expenseRepository.delete("1");
+
+		Document document = expenseCollection.find(new Document("id", "1")).first();
+
+		assertEquals(null, document);
+	}
 }
