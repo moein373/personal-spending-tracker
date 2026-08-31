@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.net.InetSocketAddress;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.bson.Document;
 import org.junit.After;
@@ -35,7 +36,6 @@ public class ExpenseMongoRepositoryTest {
 	public static void setupServer() {
 		server = new MongoServer(new MemoryBackend());
 
-		// Bind to a random available local port
 		serverAddress = server.bind();
 	}
 
@@ -52,7 +52,6 @@ public class ExpenseMongoRepositoryTest {
 
 		MongoDatabase database = client.getDatabase(ExpenseMongoRepository.DATABASE_NAME);
 
-		// Each test starts with a clean database
 		database.drop();
 
 		expenseCollection = database.getCollection(ExpenseMongoRepository.COLLECTION_NAME);

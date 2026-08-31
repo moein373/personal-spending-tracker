@@ -1,7 +1,9 @@
 package com.moein.expensetracker.repository.mongo;
 
-import java.util.Collections;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 
@@ -30,7 +32,8 @@ public class ExpenseMongoRepository implements ExpenseRepository {
 
 	@Override
 	public List<ExpenseRecord> findAll() {
-		return Collections.emptyList();
+		return StreamSupport.stream(expenseCollection.find().spliterator(), false).map(this::fromDocumentToExpense)
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -44,5 +47,11 @@ public class ExpenseMongoRepository implements ExpenseRepository {
 
 	@Override
 	public void update(ExpenseRecord expense) {
+	}
+
+	private ExpenseRecord fromDocumentToExpense(Document document) {
+		return new ExpenseRecord(document.getString("id"), document.getString("description"),
+				document.getDouble("amount"), document.getString("category"),
+				LocalDate.parse(document.getString("date")));
 	}
 }
