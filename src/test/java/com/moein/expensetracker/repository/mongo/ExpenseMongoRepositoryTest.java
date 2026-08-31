@@ -1,0 +1,81 @@
+package com.moein.expensetracker.repository.mongo;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.net.InetSocketAddress;
+import java.time.LocalDate;
+
+import org.bson.Document;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.moein.expensetracker.model.ExpenseRecord;
+
+import de.bwaldvogel.mongo.MongoServer;
+import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
+
+public class ExpenseMongoRepositoryTest {
+
+	private static MongoServer server;
+	private static InetSocketAddress serverAddress;
+
+	private MongoClient client;
+	private ExpenseMongoRepository expenseRepository;
+	private MongoCollection<Document> expenseCollection;
+
+	@BeforeClass
+	public static void setupServer() {
+		server = new MongoServer(new MemoryBackend());
+
+		// Bind to a random available local port
+		serverAddress = server.bind();
+	}
+
+	@AfterClass
+	public static void shutdownServer() {
+		server.shutdown();
+	}
+
+	@Before
+	public void setup() {
+		client = new MongoClient(new ServerAddress(serverAddress));
+
+		expenseRepository = new ExpenseMongoRepository(client);
+
+		MongoDatabase database = client.getDatabase(ExpenseMongoRepository.DATABASE_NAME);
+
+		// Each test starts with a clean database
+		database.drop();
+
+		expenseCollection = database.getCollection(ExpenseMongoRepository.COLLECTION_NAME);
+	}
+
+	@After
+	public void tearDown() {
+		client.close();
+	}
+
+	@Test
+	public void saveShouldStoreExpenseInDatabase() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Lunch", 12.50, "Food", LocalDate.of(2026, 8, 31));
+
+		expenseRepository.save(expense);
+
+		Document document = expenseCollection.find().first();
+
+		assertNotNull(document);
+		assertEquals("1", document.getString("id"));
+		assertEquals("Lunch", document.getString("description"));
+		assertEquals(12.50, document.getDouble("amount"), 0.0);
+		assertEquals("Food", document.getString("category"));
+		assertEquals("2026-08-31", document.getString("date"));
+	}
+}
