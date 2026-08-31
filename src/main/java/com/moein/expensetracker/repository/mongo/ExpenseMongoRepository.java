@@ -23,6 +23,9 @@ public class ExpenseMongoRepository implements ExpenseRepository {
 
 	@Override
 	public void save(ExpenseRecord expense) {
+		expenseCollection.insertOne(new Document().append("id", expense.getId())
+				.append("description", expense.getDescription()).append("amount", expense.getAmount())
+				.append("category", expense.getCategory()).append("date", expense.getDate().toString()));
 	}
 
 	@Override
