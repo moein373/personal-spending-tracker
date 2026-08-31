@@ -78,4 +78,29 @@ public class ExpenseMongoRepositoryTest {
 		assertEquals("Food", document.getString("category"));
 		assertEquals("2026-08-31", document.getString("date"));
 	}
+
+	@Test
+	public void findAllShouldReturnAllExpensesFromDatabase() {
+		expenseCollection.insertOne(new Document().append("id", "1").append("description", "Lunch")
+				.append("amount", 12.50).append("category", "Food").append("date", "2026-08-31"));
+
+		expenseCollection.insertOne(new Document().append("id", "2").append("description", "Bus").append("amount", 3.00)
+				.append("category", "Transport").append("date", "2026-08-31"));
+
+		List<ExpenseRecord> expenses = expenseRepository.findAll();
+
+		assertEquals(2, expenses.size());
+
+		assertEquals("1", expenses.get(0).getId());
+		assertEquals("Lunch", expenses.get(0).getDescription());
+		assertEquals(12.50, expenses.get(0).getAmount(), 0.0);
+		assertEquals("Food", expenses.get(0).getCategory());
+		assertEquals(LocalDate.of(2026, 8, 31), expenses.get(0).getDate());
+
+		assertEquals("2", expenses.get(1).getId());
+		assertEquals("Bus", expenses.get(1).getDescription());
+		assertEquals(3.00, expenses.get(1).getAmount(), 0.0);
+		assertEquals("Transport", expenses.get(1).getCategory());
+		assertEquals(LocalDate.of(2026, 8, 31), expenses.get(1).getDate());
+	}
 }
