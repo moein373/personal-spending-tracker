@@ -102,4 +102,26 @@ public class ExpenseMongoRepositoryTest {
 		assertEquals("Transport", expenses.get(1).getCategory());
 		assertEquals(LocalDate.of(2026, 8, 31), expenses.get(1).getDate());
 	}
+
+	@Test
+	public void findByIdShouldReturnExpenseWhenExpenseExists() {
+		expenseCollection.insertOne(new Document().append("id", "1").append("description", "Lunch")
+				.append("amount", 12.50).append("category", "Food").append("date", "2026-08-31"));
+
+		ExpenseRecord expense = expenseRepository.findById("1");
+
+		assertNotNull(expense);
+		assertEquals("1", expense.getId());
+		assertEquals("Lunch", expense.getDescription());
+		assertEquals(12.50, expense.getAmount(), 0.0);
+		assertEquals("Food", expense.getCategory());
+		assertEquals(LocalDate.of(2026, 8, 31), expense.getDate());
+	}
+
+	@Test
+	public void findByIdShouldReturnNullWhenExpenseDoesNotExist() {
+		ExpenseRecord expense = expenseRepository.findById("999");
+
+		assertEquals(null, expense);
+	}
 }
