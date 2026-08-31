@@ -20,4 +20,16 @@ public class ExpenseService {
 	public List<ExpenseRecord> getAllExpenses() {
 		return expenseRepository.findAll();
 	}
+
+	public ExpenseRecord getExpenseById(String id) {
+		return expenseRepository.findById(id);
+	}
+
+	public void deleteExpense(String id) {
+		expenseRepository.delete(id);
+	}
+
+	public void updateExpense(ExpenseRecord expense) {
+		expenseRepository.update(expense);
+	}
 }

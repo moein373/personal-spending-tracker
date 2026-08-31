@@ -9,4 +9,10 @@ public interface ExpenseRepository {
 	void save(ExpenseRecord expense);
 
 	List<ExpenseRecord> findAll();
+
+	ExpenseRecord findById(String id);
+
+	void delete(String id);
+
+	void update(ExpenseRecord expense);
 }
