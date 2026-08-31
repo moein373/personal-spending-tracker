@@ -4,12 +4,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import com.mongodb.client.model.Filters;
 
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import com.moein.expensetracker.model.ExpenseRecord;
 import com.moein.expensetracker.repository.ExpenseRepository;
 
@@ -50,6 +50,7 @@ public class ExpenseMongoRepository implements ExpenseRepository {
 
 	@Override
 	public void delete(String id) {
+		expenseCollection.deleteOne(Filters.eq("id", id));
 	}
 
 	@Override
