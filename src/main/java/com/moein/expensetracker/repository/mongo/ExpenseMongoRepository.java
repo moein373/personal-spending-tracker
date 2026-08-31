@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import com.mongodb.client.model.Filters;
 
 import org.bson.Document;
 
@@ -38,6 +39,12 @@ public class ExpenseMongoRepository implements ExpenseRepository {
 
 	@Override
 	public ExpenseRecord findById(String id) {
+		Document document = expenseCollection.find(Filters.eq("id", id)).first();
+
+		if (document != null) {
+			return fromDocumentToExpense(document);
+		}
+
 		return null;
 	}
 
