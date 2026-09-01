@@ -26,9 +26,7 @@ public class ExpenseMongoRepository implements ExpenseRepository {
 
 	@Override
 	public void save(ExpenseRecord expense) {
-		expenseCollection.insertOne(new Document().append("id", expense.getId())
-				.append("description", expense.getDescription()).append("amount", expense.getAmount())
-				.append("category", expense.getCategory()).append("date", expense.getDate().toString()));
+		expenseCollection.insertOne(fromExpenseToDocument(expense));
 	}
 
 	@Override
@@ -55,10 +53,13 @@ public class ExpenseMongoRepository implements ExpenseRepository {
 
 	@Override
 	public void update(ExpenseRecord expense) {
-		expenseCollection.replaceOne(Filters.eq("id", expense.getId()),
-				new Document().append("id", expense.getId()).append("description", expense.getDescription())
-						.append("amount", expense.getAmount()).append("category", expense.getCategory())
-						.append("date", expense.getDate().toString()));
+		expenseCollection.replaceOne(Filters.eq("id", expense.getId()), fromExpenseToDocument(expense));
+	}
+
+	private Document fromExpenseToDocument(ExpenseRecord expense) {
+		return new Document().append("id", expense.getId()).append("description", expense.getDescription())
+				.append("amount", expense.getAmount()).append("category", expense.getCategory())
+				.append("date", expense.getDate().toString());
 	}
 
 	private ExpenseRecord fromDocumentToExpense(Document document) {
