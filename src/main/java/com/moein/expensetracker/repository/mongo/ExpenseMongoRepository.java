@@ -55,6 +55,10 @@ public class ExpenseMongoRepository implements ExpenseRepository {
 
 	@Override
 	public void update(ExpenseRecord expense) {
+		expenseCollection.replaceOne(Filters.eq("id", expense.getId()),
+				new Document().append("id", expense.getId()).append("description", expense.getDescription())
+						.append("amount", expense.getAmount()).append("category", expense.getCategory())
+						.append("date", expense.getDate().toString()));
 	}
 
 	private ExpenseRecord fromDocumentToExpense(Document document) {
