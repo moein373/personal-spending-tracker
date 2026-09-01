@@ -136,4 +136,22 @@ public class ExpenseMongoRepositoryTest {
 
 		assertEquals(null, document);
 	}
+
+	@Test
+	public void updateShouldModifyExistingExpenseInDatabase() {
+		expenseCollection.insertOne(new Document().append("id", "1").append("description", "Lunch")
+				.append("amount", 12.50).append("category", "Food").append("date", "2026-08-31"));
+
+		ExpenseRecord updatedExpense = new ExpenseRecord("1", "Dinner", 25.00, "Food", LocalDate.of(2026, 9, 1));
+
+		expenseRepository.update(updatedExpense);
+
+		Document document = expenseCollection.find(new Document("id", "1")).first();
+
+		assertNotNull(document);
+		assertEquals("Dinner", document.getString("description"));
+		assertEquals(25.00, document.getDouble("amount"), 0.0);
+		assertEquals("Food", document.getString("category"));
+		assertEquals("2026-09-01", document.getString("date"));
+	}
 }
