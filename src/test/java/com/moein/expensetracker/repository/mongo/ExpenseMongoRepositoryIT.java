@@ -2,6 +2,7 @@ package com.moein.expensetracker.repository.mongo;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -118,5 +119,18 @@ public class ExpenseMongoRepositoryIT {
 		assertEquals(35.00, result.getAmount(), 0.0);
 		assertEquals("Fitness", result.getCategory());
 		assertEquals(LocalDate.of(2026, 9, 3), result.getDate());
+	}
+
+	@Test
+	public void shouldDeleteExpenseFromMongoDB() {
+		ExpenseRecord expense = new ExpenseRecord("6", "Taxi", 15.00, "Transport", LocalDate.of(2026, 9, 2));
+
+		expenseRepository.save(expense);
+
+		expenseRepository.delete("6");
+
+		ExpenseRecord result = expenseRepository.findById("6");
+
+		assertNull(result);
 	}
 }
