@@ -1,6 +1,9 @@
 package com.moein.expensetracker.repository.mongo;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.time.LocalDate;
 
 import org.bson.Document;
 import org.junit.After;
@@ -9,6 +12,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.testcontainers.containers.MongoDBContainer;
 
+import com.moein.expensetracker.model.ExpenseRecord;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
@@ -44,5 +48,20 @@ public class ExpenseMongoRepositoryIT {
 	@Test
 	public void shouldConnectToMongoDBContainer() {
 		assertNotNull(expenseCollection);
+	}
+
+	@Test
+	public void shouldSaveExpenseToMongoDB() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 2));
+
+		expenseRepository.save(expense);
+
+		Document document = expenseCollection.find(new Document("id", "1")).first();
+
+		assertNotNull(document);
+		assertEquals("Coffee", document.getString("description"));
+		assertEquals(3.50, document.getDouble("amount"), 0.0);
+		assertEquals("Food", document.getString("category"));
+		assertEquals("2026-09-02", document.getString("date"));
 	}
 }
