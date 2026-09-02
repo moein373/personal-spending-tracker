@@ -97,4 +97,26 @@ public class ExpenseMongoRepositoryIT {
 		assertEquals("Fitness", expense.getCategory());
 		assertEquals(LocalDate.of(2026, 9, 2), expense.getDate());
 	}
+
+	@Test
+	public void shouldUpdateExpenseInMongoDB() {
+		ExpenseRecord originalExpense = new ExpenseRecord("5", "Old description", 20.00, "Other",
+				LocalDate.of(2026, 9, 2));
+
+		expenseRepository.save(originalExpense);
+
+		ExpenseRecord updatedExpense = new ExpenseRecord("5", "Gym Membership", 35.00, "Fitness",
+				LocalDate.of(2026, 9, 3));
+
+		expenseRepository.update(updatedExpense);
+
+		ExpenseRecord result = expenseRepository.findById("5");
+
+		assertNotNull(result);
+		assertEquals("5", result.getId());
+		assertEquals("Gym Membership", result.getDescription());
+		assertEquals(35.00, result.getAmount(), 0.0);
+		assertEquals("Fitness", result.getCategory());
+		assertEquals(LocalDate.of(2026, 9, 3), result.getDate());
+	}
 }
