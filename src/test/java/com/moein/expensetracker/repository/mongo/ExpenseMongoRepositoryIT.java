@@ -82,4 +82,19 @@ public class ExpenseMongoRepositoryIT {
 		assertEquals("3", expenses.get(1).getId());
 		assertEquals("Taxi", expenses.get(1).getDescription());
 	}
+
+	@Test
+	public void shouldFindExpenseByIdFromMongoDB() {
+		expenseCollection.insertOne(new Document("id", "4").append("description", "Gym Membership")
+				.append("amount", 30.00).append("category", "Fitness").append("date", "2026-09-02"));
+
+		ExpenseRecord expense = expenseRepository.findById("4");
+
+		assertNotNull(expense);
+		assertEquals("4", expense.getId());
+		assertEquals("Gym Membership", expense.getDescription());
+		assertEquals(30.00, expense.getAmount(), 0.0);
+		assertEquals("Fitness", expense.getCategory());
+		assertEquals(LocalDate.of(2026, 9, 2), expense.getDate());
+	}
 }
