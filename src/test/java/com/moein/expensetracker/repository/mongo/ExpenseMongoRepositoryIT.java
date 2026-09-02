@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.bson.Document;
 import org.junit.After;
@@ -63,5 +64,22 @@ public class ExpenseMongoRepositoryIT {
 		assertEquals(3.50, document.getDouble("amount"), 0.0);
 		assertEquals("Food", document.getString("category"));
 		assertEquals("2026-09-02", document.getString("date"));
+	}
+
+	@Test
+	public void shouldFindAllExpensesFromMongoDB() {
+		expenseCollection.insertOne(new Document("id", "2").append("description", "Lunch").append("amount", 12.50)
+				.append("category", "Food").append("date", "2026-09-02"));
+
+		expenseCollection.insertOne(new Document("id", "3").append("description", "Taxi").append("amount", 15.00)
+				.append("category", "Transport").append("date", "2026-09-02"));
+
+		List<ExpenseRecord> expenses = expenseRepository.findAll();
+
+		assertEquals(2, expenses.size());
+		assertEquals("2", expenses.get(0).getId());
+		assertEquals("Lunch", expenses.get(0).getDescription());
+		assertEquals("3", expenses.get(1).getId());
+		assertEquals("Taxi", expenses.get(1).getDescription());
 	}
 }
