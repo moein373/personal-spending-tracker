@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+import com.moein.expensetracker.controller.ExpenseController;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +24,7 @@ public class ExpenseTrackerFrame extends JFrame {
 	private JTextField amountField;
 	private JTextField categoryField;
 	private JTextField dateField;
+	private ExpenseController expenseController;
 
 	private JButton addButton;
 	private JButton updateButton;
@@ -118,10 +119,15 @@ public class ExpenseTrackerFrame extends JFrame {
 		add(new JScrollPane(expenseTable), BorderLayout.CENTER);
 	}
 
+	public void setExpenseController(ExpenseController expenseController) {
+		this.expenseController = expenseController;
+	}
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			ExpenseTrackerFrame frame = new ExpenseTrackerFrame();
 			frame.setVisible(true);
 		});
 	}
+
 }
