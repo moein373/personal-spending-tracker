@@ -146,6 +146,14 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 
 	@Override
 	public void expenseRemoved(ExpenseRecord expense) {
+		for (int row = 0; row < tableModel.getRowCount(); row++) {
+			Object idValue = tableModel.getValueAt(row, 0);
+
+			if (expense.getId().equals(idValue)) {
+				tableModel.removeRow(row);
+				break;
+			}
+		}
 	}
 
 	public void setExpenseController(ExpenseController expenseController) {
