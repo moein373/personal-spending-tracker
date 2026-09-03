@@ -79,6 +79,10 @@ public class ExpenseTrackerFrame extends JFrame {
 		amountField.addKeyListener(addButtonEnabler);
 		categoryField.addKeyListener(addButtonEnabler);
 		dateField.addKeyListener(addButtonEnabler);
+		addButton.addActionListener(
+				e -> expenseController.addExpense(new com.moein.expensetracker.model.ExpenseRecord(idField.getText(),
+						descriptionField.getText(), Double.parseDouble(amountField.getText()), categoryField.getText(),
+						java.time.LocalDate.parse(dateField.getText()))));
 
 		tableModel = new DefaultTableModel(new Object[] { "ID", "Description", "Amount", "Category", "Date" }, 0);
 

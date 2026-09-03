@@ -1,22 +1,20 @@
 package com.moein.expensetracker.ui;
 
-import static org.mockito.Mockito.mock;
-
-import com.moein.expensetracker.controller.ExpenseController;
-import org.assertj.swing.edt.GuiActionRunner;
-import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.junit.runner.GUITestRunner;
-import org.assertj.swing.core.matcher.JButtonMatcher;
-import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.time.LocalDate;
 
+import org.assertj.swing.core.matcher.JButtonMatcher;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.junit.runner.GUITestRunner;
+import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.moein.expensetracker.controller.ExpenseController;
-import com.moein.expensetracker.model.ExpenseRecord;
 
 @RunWith(GUITestRunner.class)
 public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
@@ -86,6 +84,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 		window.button(JButtonMatcher.withText("Add")).click();
 
-		verify(expenseController).addExpense(new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 3)));
+		verify(expenseController).addExpense(argThat(expense -> "1".equals(expense.getId())
+				&& "Coffee".equals(expense.getDescription()) && Double.compare(3.50, expense.getAmount()) == 0
+				&& "Food".equals(expense.getCategory()) && LocalDate.of(2026, 9, 3).equals(expense.getDate())));
 	}
 }
