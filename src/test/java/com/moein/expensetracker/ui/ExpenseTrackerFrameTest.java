@@ -151,4 +151,20 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 				&& LocalDate.of(2026, 9, 3).equals(selectedExpense.getDate())));
 	}
 
+	@Test
+	public void expenseUpdatedShouldUpdateExpenseInTable() {
+		ExpenseRecord originalExpense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 3));
+
+		ExpenseRecord updatedExpense = new ExpenseRecord("1", "Dinner", 25.00, "Food", LocalDate.of(2026, 9, 3));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(originalExpense)));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.expenseUpdated(updatedExpense));
+
+		window.table("expenseTable").requireRowCount(1);
+
+		window.table("expenseTable")
+				.requireContents(new String[][] { { "1", "Dinner", "25.0", "Food", "2026-09-03" } });
+	}
+
 }
