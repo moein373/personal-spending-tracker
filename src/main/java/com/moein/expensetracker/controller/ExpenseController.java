@@ -27,4 +27,9 @@ public class ExpenseController {
 		expenseRepository.delete(expense.getId());
 		expenseView.expenseRemoved(expense);
 	}
+
+	public void updateExpense(ExpenseRecord expense) {
+		expenseRepository.update(expense);
+		expenseView.expenseUpdated(expense);
+	}
 }

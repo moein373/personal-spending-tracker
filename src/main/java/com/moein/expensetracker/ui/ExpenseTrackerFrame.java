@@ -180,4 +180,8 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 			frame.setVisible(true);
 		});
 	}
+
+	@Override
+	public void expenseUpdated(ExpenseRecord expense) {
+	}
 }

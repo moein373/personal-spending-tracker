@@ -11,4 +11,6 @@ public interface ExpenseView {
 	void expenseAdded(ExpenseRecord expense);
 
 	void expenseRemoved(ExpenseRecord expense);
+
+	void expenseUpdated(ExpenseRecord expense);
 }
