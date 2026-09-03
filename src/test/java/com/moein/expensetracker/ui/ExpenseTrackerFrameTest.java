@@ -10,6 +10,13 @@ import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.time.LocalDate;
+
+import com.moein.expensetracker.controller.ExpenseController;
+import com.moein.expensetracker.model.ExpenseRecord;
 
 @RunWith(GUITestRunner.class)
 public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
@@ -64,5 +71,21 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		ExpenseController expenseController = mock(ExpenseController.class);
 
 		expenseTrackerFrame.setExpenseController(expenseController);
+	}
+
+	@Test
+	public void addButtonShouldDelegateExpenseToController() {
+		ExpenseController expenseController = mock(ExpenseController.class);
+		expenseTrackerFrame.setExpenseController(expenseController);
+
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("descriptionTextBox").enterText("Coffee");
+		window.textBox("amountTextBox").enterText("3.50");
+		window.textBox("categoryTextBox").enterText("Food");
+		window.textBox("dateTextBox").enterText("2026-09-03");
+
+		window.button(JButtonMatcher.withText("Add")).click();
+
+		verify(expenseController).addExpense(new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 3)));
 	}
 }
