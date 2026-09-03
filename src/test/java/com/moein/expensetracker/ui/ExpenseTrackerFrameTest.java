@@ -1,5 +1,8 @@
 package com.moein.expensetracker.ui;
 
+import static org.mockito.Mockito.mock;
+
+import com.moein.expensetracker.controller.ExpenseController;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -54,5 +57,12 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.textBox("dateTextBox").enterText("2026-09-03");
 
 		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+	}
+
+	@Test
+	public void shouldAcceptExpenseController() {
+		ExpenseController expenseController = mock(ExpenseController.class);
+
+		expenseTrackerFrame.setExpenseController(expenseController);
 	}
 }
