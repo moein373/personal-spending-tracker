@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.moein.expensetracker.model.ExpenseRecord;
 import com.moein.expensetracker.controller.ExpenseController;
+import java.util.Arrays;
 
 @RunWith(GUITestRunner.class)
 public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
@@ -98,6 +99,20 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.table("expenseTable").requireRowCount(1);
 
 		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-03" } });
+	}
+
+	@Test
+	public void showAllExpensesShouldPopulateTable() {
+		ExpenseRecord expense1 = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 3));
+
+		ExpenseRecord expense2 = new ExpenseRecord("2", "Bus", 1.50, "Transport", LocalDate.of(2026, 9, 3));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(expense1, expense2)));
+
+		window.table("expenseTable").requireRowCount(2);
+
+		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-03" },
+				{ "2", "Bus", "1.5", "Transport", "2026-09-03" } });
 	}
 
 }
