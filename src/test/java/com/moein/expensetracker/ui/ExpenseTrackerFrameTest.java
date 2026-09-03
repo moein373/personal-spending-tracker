@@ -33,4 +33,14 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 	public void addButtonShouldBeDisabledByDefault() {
 		window.button(JButtonMatcher.withText("Add")).requireDisabled();
 	}
+
+	@Test
+	public void addButtonShouldBeEnabledWhenAllFieldsAreFilled() {
+		window.textBox("descriptionTextBox").enterText("Coffee");
+		window.textBox("amountTextBox").enterText("3.50");
+		window.textBox("categoryTextBox").enterText("Food");
+		window.textBox("dateTextBox").enterText("2026-09-03");
+
+		window.button(JButtonMatcher.withText("Add")).requireEnabled();
+	}
 }
