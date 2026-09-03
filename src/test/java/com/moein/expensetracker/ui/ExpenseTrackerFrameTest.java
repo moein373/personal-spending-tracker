@@ -3,6 +3,7 @@ package com.moein.expensetracker.ui;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,5 +27,10 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void shouldCreateExpenseTrackerFrame() {
+	}
+
+	@Test
+	public void addButtonShouldBeDisabledByDefault() {
+		window.button(JButtonMatcher.withText("Add")).requireDisabled();
 	}
 }
