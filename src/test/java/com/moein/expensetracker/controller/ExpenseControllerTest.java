@@ -67,4 +67,14 @@ public class ExpenseControllerTest {
 		verify(expenseRepository).delete("1");
 		verify(expenseView).expenseRemoved(expense);
 	}
+
+	@Test
+	public void shouldUpdateExpense() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Dinner", 25.00, "Food", LocalDate.of(2026, 9, 3));
+
+		expenseController.updateExpense(expense);
+
+		verify(expenseRepository).update(expense);
+		verify(expenseView).expenseUpdated(expense);
+	}
 }
