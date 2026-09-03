@@ -131,4 +131,24 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 				.requireContents(new String[][] { { "2", "Bus", "1.5", "Transport", "2026-09-03" } });
 	}
 
+	@Test
+	public void deleteButtonShouldDelegateSelectedExpenseToController() {
+		ExpenseController expenseController = mock(ExpenseController.class);
+		expenseTrackerFrame.setExpenseController(expenseController);
+
+		ExpenseRecord expense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 3));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(expense)));
+
+		window.table("expenseTable").selectRows(0);
+
+		window.button(JButtonMatcher.withText("Delete")).click();
+
+		verify(expenseController).deleteExpense(argThat(selectedExpense -> "1".equals(selectedExpense.getId())
+				&& "Coffee".equals(selectedExpense.getDescription())
+				&& Double.compare(3.50, selectedExpense.getAmount()) == 0
+				&& "Food".equals(selectedExpense.getCategory())
+				&& LocalDate.of(2026, 9, 3).equals(selectedExpense.getDate())));
+	}
+
 }
