@@ -94,6 +94,14 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 		expenseTable = new JTable(tableModel);
 		expenseTable.setName("expenseTable");
 
+		updateButton.addActionListener(e -> {
+			ExpenseRecord expense = new ExpenseRecord(idField.getText(), descriptionField.getText(),
+					Double.parseDouble(amountField.getText()), categoryField.getText(),
+					java.time.LocalDate.parse(dateField.getText()));
+
+			expenseController.updateExpense(expense);
+		});
+
 		deleteButton.addActionListener(e -> {
 			int selectedRow = expenseTable.getSelectedRow();
 
@@ -170,17 +178,6 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 		}
 	}
 
-	public void setExpenseController(ExpenseController expenseController) {
-		this.expenseController = expenseController;
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			ExpenseTrackerFrame frame = new ExpenseTrackerFrame();
-			frame.setVisible(true);
-		});
-	}
-
 	@Override
 	public void expenseUpdated(ExpenseRecord expense) {
 		for (int row = 0; row < tableModel.getRowCount(); row++) {
@@ -194,5 +191,16 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 				break;
 			}
 		}
+	}
+
+	public void setExpenseController(ExpenseController expenseController) {
+		this.expenseController = expenseController;
+	}
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			ExpenseTrackerFrame frame = new ExpenseTrackerFrame();
+			frame.setVisible(true);
+		});
 	}
 }
