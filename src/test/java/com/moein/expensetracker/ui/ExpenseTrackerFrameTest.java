@@ -167,4 +167,29 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 				.requireContents(new String[][] { { "1", "Dinner", "25.0", "Food", "2026-09-03" } });
 	}
 
+	@Test
+	public void updateButtonShouldDelegateEditedExpenseToController() {
+		ExpenseController expenseController = mock(ExpenseController.class);
+		expenseTrackerFrame.setExpenseController(expenseController);
+
+		ExpenseRecord expense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 3));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(expense)));
+
+		window.table("expenseTable").selectRows(0);
+
+		window.textBox("idTextBox").setText("1");
+		window.textBox("descriptionTextBox").setText("Dinner");
+		window.textBox("amountTextBox").setText("25.00");
+		window.textBox("categoryTextBox").setText("Food");
+		window.textBox("dateTextBox").setText("2026-09-03");
+
+		window.button(JButtonMatcher.withText("Update")).click();
+
+		verify(expenseController).updateExpense(argThat(updatedExpense -> "1".equals(updatedExpense.getId())
+				&& "Dinner".equals(updatedExpense.getDescription())
+				&& Double.compare(25.00, updatedExpense.getAmount()) == 0 && "Food".equals(updatedExpense.getCategory())
+				&& LocalDate.of(2026, 9, 3).equals(updatedExpense.getDate())));
+	}
+
 }
