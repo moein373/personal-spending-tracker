@@ -2,7 +2,8 @@ package com.moein.expensetracker.ui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,11 +52,23 @@ public class ExpenseTrackerFrame extends JFrame {
 
 		dateField = new JTextField();
 		dateField.setName("dateTextBox");
+		KeyAdapter addButtonEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				addButton.setEnabled(
+						!descriptionField.getText().trim().isEmpty() && !amountField.getText().trim().isEmpty()
+								&& !categoryField.getText().trim().isEmpty() && !dateField.getText().trim().isEmpty());
+			}
+		};
 
 		addButton = new JButton("Add");
 		addButton.setEnabled(false);
 		updateButton = new JButton("Update");
 		deleteButton = new JButton("Delete");
+		descriptionField.addKeyListener(addButtonEnabler);
+		amountField.addKeyListener(addButtonEnabler);
+		categoryField.addKeyListener(addButtonEnabler);
+		dateField.addKeyListener(addButtonEnabler);
 
 		tableModel = new DefaultTableModel(new Object[] { "ID", "Description", "Amount", "Category", "Date" }, 0);
 
