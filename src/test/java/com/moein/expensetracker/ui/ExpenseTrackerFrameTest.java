@@ -115,4 +115,20 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 				{ "2", "Bus", "1.5", "Transport", "2026-09-03" } });
 	}
 
+	@Test
+	public void expenseRemovedShouldRemoveExpenseFromTable() {
+		ExpenseRecord expense1 = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 3));
+
+		ExpenseRecord expense2 = new ExpenseRecord("2", "Bus", 1.50, "Transport", LocalDate.of(2026, 9, 3));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(expense1, expense2)));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.expenseRemoved(expense1));
+
+		window.table("expenseTable").requireRowCount(1);
+
+		window.table("expenseTable")
+				.requireContents(new String[][] { { "2", "Bus", "1.5", "Transport", "2026-09-03" } });
+	}
+
 }
