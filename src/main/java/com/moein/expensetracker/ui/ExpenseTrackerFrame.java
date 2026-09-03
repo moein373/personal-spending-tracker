@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +19,7 @@ public class ExpenseTrackerFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	private JTextField idField;
 	private JTextField descriptionField;
 	private JTextField amountField;
 	private JTextField categoryField;
@@ -41,6 +43,9 @@ public class ExpenseTrackerFrame extends JFrame {
 	}
 
 	private void createComponents() {
+		idField = new JTextField();
+		idField.setName("idTextBox");
+
 		descriptionField = new JTextField();
 		descriptionField.setName("descriptionTextBox");
 
@@ -52,19 +57,23 @@ public class ExpenseTrackerFrame extends JFrame {
 
 		dateField = new JTextField();
 		dateField.setName("dateTextBox");
-		KeyAdapter addButtonEnabler = new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				addButton.setEnabled(
-						!descriptionField.getText().trim().isEmpty() && !amountField.getText().trim().isEmpty()
-								&& !categoryField.getText().trim().isEmpty() && !dateField.getText().trim().isEmpty());
-			}
-		};
 
 		addButton = new JButton("Add");
 		addButton.setEnabled(false);
+
 		updateButton = new JButton("Update");
 		deleteButton = new JButton("Delete");
+
+		KeyAdapter addButtonEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				addButton.setEnabled(!idField.getText().trim().isEmpty() && !descriptionField.getText().trim().isEmpty()
+						&& !amountField.getText().trim().isEmpty() && !categoryField.getText().trim().isEmpty()
+						&& !dateField.getText().trim().isEmpty());
+			}
+		};
+
+		idField.addKeyListener(addButtonEnabler);
 		descriptionField.addKeyListener(addButtonEnabler);
 		amountField.addKeyListener(addButtonEnabler);
 		categoryField.addKeyListener(addButtonEnabler);
@@ -77,7 +86,10 @@ public class ExpenseTrackerFrame extends JFrame {
 	}
 
 	private void createLayout() {
-		JPanel formPanel = new JPanel(new GridLayout(4, 2));
+		JPanel formPanel = new JPanel(new GridLayout(5, 2));
+
+		formPanel.add(new JLabel("ID"));
+		formPanel.add(idField);
 
 		formPanel.add(new JLabel("Description"));
 		formPanel.add(descriptionField);

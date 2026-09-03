@@ -36,6 +36,7 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void addButtonShouldBeEnabledWhenAllFieldsAreFilled() {
+		window.textBox("idTextBox").enterText("1");
 		window.textBox("descriptionTextBox").enterText("Coffee");
 		window.textBox("amountTextBox").enterText("3.50");
 		window.textBox("categoryTextBox").enterText("Food");
@@ -46,6 +47,7 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void addButtonShouldRemainDisabledWhenAnyFieldIsBlank() {
+		window.textBox("idTextBox").enterText("1");
 		window.textBox("descriptionTextBox").enterText("Coffee");
 		window.textBox("amountTextBox").enterText("3.50");
 		window.textBox("categoryTextBox").enterText(" ");
