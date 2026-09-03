@@ -128,6 +128,17 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 	}
 
 	@Override
+	public void showAllExpenses(java.util.List<ExpenseRecord> expenses) {
+		tableModel.setRowCount(0);
+
+		for (ExpenseRecord expense : expenses) {
+			tableModel.addRow(new Object[] { expense.getId(), expense.getDescription(), expense.getAmount(),
+					expense.getCategory(), expense.getDate() });
+		}
+	}
+
+	@Override
+
 	public void expenseAdded(ExpenseRecord expense) {
 		tableModel.addRow(new Object[] { expense.getId(), expense.getDescription(), expense.getAmount(),
 				expense.getCategory(), expense.getDate() });

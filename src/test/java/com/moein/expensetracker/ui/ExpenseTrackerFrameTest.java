@@ -14,7 +14,6 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.moein.expensetracker.model.ExpenseRecord;
-
 import com.moein.expensetracker.controller.ExpenseController;
 
 @RunWith(GUITestRunner.class)
@@ -100,4 +99,5 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-03" } });
 	}
+
 }

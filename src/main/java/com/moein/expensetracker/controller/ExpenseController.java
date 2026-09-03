@@ -18,4 +18,8 @@ public class ExpenseController {
 		expenseRepository.save(expense);
 		expenseView.expenseAdded(expense);
 	}
+
+	public void loadAllExpenses() {
+		expenseView.showAllExpenses(expenseRepository.findAll());
+	}
 }
