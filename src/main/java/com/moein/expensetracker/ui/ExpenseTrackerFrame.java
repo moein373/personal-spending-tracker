@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import com.moein.expensetracker.controller.ExpenseController;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,7 +15,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-public class ExpenseTrackerFrame extends JFrame {
+import com.moein.expensetracker.controller.ExpenseController;
+import com.moein.expensetracker.model.ExpenseRecord;
+
+public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,7 +27,6 @@ public class ExpenseTrackerFrame extends JFrame {
 	private JTextField amountField;
 	private JTextField categoryField;
 	private JTextField dateField;
-	private ExpenseController expenseController;
 
 	private JButton addButton;
 	private JButton updateButton;
@@ -32,6 +34,8 @@ public class ExpenseTrackerFrame extends JFrame {
 
 	private JTable expenseTable;
 	private DefaultTableModel tableModel;
+
+	private ExpenseController expenseController;
 
 	public ExpenseTrackerFrame() {
 		setTitle("Personal Spending Tracker");
@@ -79,10 +83,10 @@ public class ExpenseTrackerFrame extends JFrame {
 		amountField.addKeyListener(addButtonEnabler);
 		categoryField.addKeyListener(addButtonEnabler);
 		dateField.addKeyListener(addButtonEnabler);
-		addButton.addActionListener(
-				e -> expenseController.addExpense(new com.moein.expensetracker.model.ExpenseRecord(idField.getText(),
-						descriptionField.getText(), Double.parseDouble(amountField.getText()), categoryField.getText(),
-						java.time.LocalDate.parse(dateField.getText()))));
+
+		addButton.addActionListener(e -> expenseController.addExpense(new ExpenseRecord(idField.getText(),
+				descriptionField.getText(), Double.parseDouble(amountField.getText()), categoryField.getText(),
+				java.time.LocalDate.parse(dateField.getText()))));
 
 		tableModel = new DefaultTableModel(new Object[] { "ID", "Description", "Amount", "Category", "Date" }, 0);
 
@@ -123,6 +127,12 @@ public class ExpenseTrackerFrame extends JFrame {
 		add(new JScrollPane(expenseTable), BorderLayout.CENTER);
 	}
 
+	@Override
+	public void expenseAdded(ExpenseRecord expense) {
+		tableModel.addRow(new Object[] { expense.getId(), expense.getDescription(), expense.getAmount(),
+				expense.getCategory(), expense.getDate() });
+	}
+
 	public void setExpenseController(ExpenseController expenseController) {
 		this.expenseController = expenseController;
 	}
@@ -133,5 +143,4 @@ public class ExpenseTrackerFrame extends JFrame {
 			frame.setVisible(true);
 		});
 	}
-
 }
