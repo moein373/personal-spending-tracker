@@ -46,6 +46,7 @@ public class ExpenseTrackerFrame extends JFrame {
 		dateField = new JTextField();
 
 		addButton = new JButton("Add");
+		addButton.setEnabled(false);
 		updateButton = new JButton("Update");
 		deleteButton = new JButton("Delete");
 
