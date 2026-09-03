@@ -183,5 +183,16 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 
 	@Override
 	public void expenseUpdated(ExpenseRecord expense) {
+		for (int row = 0; row < tableModel.getRowCount(); row++) {
+			Object idValue = tableModel.getValueAt(row, 0);
+
+			if (expense.getId().equals(idValue)) {
+				tableModel.setValueAt(expense.getDescription(), row, 1);
+				tableModel.setValueAt(expense.getAmount(), row, 2);
+				tableModel.setValueAt(expense.getCategory(), row, 3);
+				tableModel.setValueAt(expense.getDate(), row, 4);
+				break;
+			}
+		}
 	}
 }
