@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -92,6 +93,20 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 
 		expenseTable = new JTable(tableModel);
 		expenseTable.setName("expenseTable");
+
+		deleteButton.addActionListener(e -> {
+			int selectedRow = expenseTable.getSelectedRow();
+
+			if (selectedRow >= 0) {
+				ExpenseRecord expense = new ExpenseRecord(tableModel.getValueAt(selectedRow, 0).toString(),
+						tableModel.getValueAt(selectedRow, 1).toString(),
+						Double.parseDouble(tableModel.getValueAt(selectedRow, 2).toString()),
+						tableModel.getValueAt(selectedRow, 3).toString(),
+						java.time.LocalDate.parse(tableModel.getValueAt(selectedRow, 4).toString()));
+
+				expenseController.deleteExpense(expense);
+			}
+		});
 	}
 
 	private void createLayout() {
@@ -128,7 +143,7 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 	}
 
 	@Override
-	public void showAllExpenses(java.util.List<ExpenseRecord> expenses) {
+	public void showAllExpenses(List<ExpenseRecord> expenses) {
 		tableModel.setRowCount(0);
 
 		for (ExpenseRecord expense : expenses) {
@@ -138,7 +153,6 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 	}
 
 	@Override
-
 	public void expenseAdded(ExpenseRecord expense) {
 		tableModel.addRow(new Object[] { expense.getId(), expense.getDescription(), expense.getAmount(),
 				expense.getCategory(), expense.getDate() });
