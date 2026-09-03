@@ -13,6 +13,7 @@ import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import com.moein.expensetracker.model.ExpenseRecord;
 
 import com.moein.expensetracker.controller.ExpenseController;
 
@@ -87,5 +88,16 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		verify(expenseController).addExpense(argThat(expense -> "1".equals(expense.getId())
 				&& "Coffee".equals(expense.getDescription()) && Double.compare(3.50, expense.getAmount()) == 0
 				&& "Food".equals(expense.getCategory()) && LocalDate.of(2026, 9, 3).equals(expense.getDate())));
+	}
+
+	@Test
+	public void expenseAddedShouldAddExpenseToTable() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 3));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.expenseAdded(expense));
+
+		window.table("expenseTable").requireRowCount(1);
+
+		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-03" } });
 	}
 }
