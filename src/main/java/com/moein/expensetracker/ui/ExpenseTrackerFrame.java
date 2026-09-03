@@ -41,9 +41,16 @@ public class ExpenseTrackerFrame extends JFrame {
 
 	private void createComponents() {
 		descriptionField = new JTextField();
+		descriptionField.setName("descriptionTextBox");
+
 		amountField = new JTextField();
+		amountField.setName("amountTextBox");
+
 		categoryField = new JTextField();
+		categoryField.setName("categoryTextBox");
+
 		dateField = new JTextField();
+		dateField.setName("dateTextBox");
 
 		addButton = new JButton("Add");
 		addButton.setEnabled(false);
@@ -53,6 +60,7 @@ public class ExpenseTrackerFrame extends JFrame {
 		tableModel = new DefaultTableModel(new Object[] { "ID", "Description", "Amount", "Category", "Date" }, 0);
 
 		expenseTable = new JTable(tableModel);
+		expenseTable.setName("expenseTable");
 	}
 
 	private void createLayout() {
