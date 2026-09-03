@@ -9,4 +9,6 @@ public interface ExpenseView {
 	void showAllExpenses(List<ExpenseRecord> expenses);
 
 	void expenseAdded(ExpenseRecord expense);
+
+	void expenseRemoved(ExpenseRecord expense);
 }

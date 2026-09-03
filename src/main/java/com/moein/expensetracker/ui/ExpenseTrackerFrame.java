@@ -144,6 +144,10 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 				expense.getCategory(), expense.getDate() });
 	}
 
+	@Override
+	public void expenseRemoved(ExpenseRecord expense) {
+	}
+
 	public void setExpenseController(ExpenseController expenseController) {
 		this.expenseController = expenseController;
 	}

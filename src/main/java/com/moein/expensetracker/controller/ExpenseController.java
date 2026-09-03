@@ -22,4 +22,9 @@ public class ExpenseController {
 	public void loadAllExpenses() {
 		expenseView.showAllExpenses(expenseRepository.findAll());
 	}
+
+	public void deleteExpense(ExpenseRecord expense) {
+		expenseRepository.delete(expense.getId());
+		expenseView.expenseRemoved(expense);
+	}
 }
