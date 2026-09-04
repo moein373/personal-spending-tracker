@@ -1,12 +1,17 @@
 package com.moein.expensetracker.ui;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -15,9 +20,9 @@ import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import com.moein.expensetracker.model.ExpenseRecord;
+
 import com.moein.expensetracker.controller.ExpenseController;
-import java.util.Arrays;
+import com.moein.expensetracker.model.ExpenseRecord;
 
 @RunWith(GUITestRunner.class)
 public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
@@ -38,11 +43,13 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void shouldCreateExpenseTrackerFrame() {
+		assertNotNull(expenseTrackerFrame);
 	}
 
 	@Test
 	public void addButtonShouldBeDisabledByDefault() {
 		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+		assertFalse(window.button(JButtonMatcher.withText("Add")).target().isEnabled());
 	}
 
 	@Test
@@ -54,6 +61,7 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.textBox("dateTextBox").enterText("2026-09-03");
 
 		window.button(JButtonMatcher.withText("Add")).requireEnabled();
+		assertTrue(window.button(JButtonMatcher.withText("Add")).target().isEnabled());
 	}
 
 	@Test
@@ -65,6 +73,7 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.textBox("dateTextBox").enterText("2026-09-03");
 
 		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+		assertFalse(window.button(JButtonMatcher.withText("Add")).target().isEnabled());
 	}
 
 	@Test
@@ -72,6 +81,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		ExpenseController expenseController = mock(ExpenseController.class);
 
 		expenseTrackerFrame.setExpenseController(expenseController);
+
+		assertNotNull(expenseController);
 	}
 
 	@Test
@@ -101,6 +112,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.table("expenseTable").requireRowCount(1);
 
 		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-03" } });
+
+		assertEquals(1, window.table("expenseTable").target().getRowCount());
 	}
 
 	@Test
@@ -115,6 +128,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-03" },
 				{ "2", "Bus", "1.5", "Transport", "2026-09-03" } });
+
+		assertEquals(2, window.table("expenseTable").target().getRowCount());
 	}
 
 	@Test
@@ -131,6 +146,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 		window.table("expenseTable")
 				.requireContents(new String[][] { { "2", "Bus", "1.5", "Transport", "2026-09-03" } });
+
+		assertEquals(1, window.table("expenseTable").target().getRowCount());
 	}
 
 	@Test
@@ -167,6 +184,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 
 		window.table("expenseTable")
 				.requireContents(new String[][] { { "1", "Dinner", "25.0", "Food", "2026-09-03" } });
+
+		assertEquals("Dinner", window.table("expenseTable").target().getValueAt(0, 1));
 	}
 
 	@Test
@@ -207,6 +226,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.textBox("amountTextBox").requireText("3.5");
 		window.textBox("categoryTextBox").requireText("Food");
 		window.textBox("dateTextBox").requireText("2026-09-04");
+
+		assertEquals("Coffee", window.textBox("descriptionTextBox").target().getText());
 	}
 
 	@Test
@@ -232,6 +253,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.table("expenseTable").requireRowCount(1);
 
 		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-04" } });
+
+		assertEquals(1, window.table("expenseTable").target().getRowCount());
 	}
 
 	@Test
@@ -247,6 +270,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.table("expenseTable").requireRowCount(1);
 
 		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-04" } });
+
+		assertEquals("Coffee", window.table("expenseTable").target().getValueAt(0, 1));
 	}
 
 	@Test
@@ -277,6 +302,8 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.textBox("dateTextBox").deleteText();
 
 		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+
+		assertFalse(window.button(JButtonMatcher.withText("Add")).target().isEnabled());
 	}
 
 }
