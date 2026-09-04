@@ -1,6 +1,7 @@
 package com.moein.expensetracker.integration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.net.InetSocketAddress;
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ public class ExpenseTrackerIntegrationTest extends AssertJSwingJUnitTestCase {
 	private MongoClient mongoClient;
 	private ExpenseRepository expenseRepository;
 	private ExpenseTrackerFrame expenseTrackerFrame;
+	private ExpenseController expenseController;
 	private FrameFixture window;
 
 	@Override
@@ -46,7 +48,7 @@ public class ExpenseTrackerIntegrationTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			expenseTrackerFrame = new ExpenseTrackerFrame();
 
-			ExpenseController expenseController = new ExpenseController(expenseTrackerFrame, expenseRepository);
+			expenseController = new ExpenseController(expenseTrackerFrame, expenseRepository);
 
 			expenseTrackerFrame.setExpenseController(expenseController);
 
@@ -84,5 +86,52 @@ public class ExpenseTrackerIntegrationTest extends AssertJSwingJUnitTestCase {
 		assertEquals(LocalDate.of(2026, 9, 4), expenses.get(0).getDate());
 
 		window.table("expenseTable").requireRowCount(1);
+	}
+
+	@Test
+	public void shouldUpdateExpenseThroughUserInterface() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 4));
+
+		expenseRepository.save(expense);
+
+		GuiActionRunner.execute(() -> expenseController.loadAllExpenses());
+
+		window.table("expenseTable").requireRowCount(1);
+
+		window.table("expenseTable").selectRows(0);
+
+		window.textBox("descriptionTextBox").setText("Dinner");
+
+		window.textBox("amountTextBox").setText("25.00");
+
+		window.button(JButtonMatcher.withText("Update")).click();
+
+		ExpenseRecord updatedExpense = expenseRepository.findById("1");
+
+		assertEquals("Dinner", updatedExpense.getDescription());
+
+		assertEquals(25.00, updatedExpense.getAmount(), 0.001);
+
+		window.table("expenseTable")
+				.requireContents(new String[][] { { "1", "Dinner", "25.0", "Food", "2026-09-04" } });
+	}
+
+	@Test
+	public void shouldDeleteExpenseThroughUserInterface() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 4));
+
+		expenseRepository.save(expense);
+
+		GuiActionRunner.execute(() -> expenseController.loadAllExpenses());
+
+		window.table("expenseTable").requireRowCount(1);
+
+		window.table("expenseTable").selectRows(0);
+
+		window.button(JButtonMatcher.withText("Delete")).click();
+
+		assertNull(expenseRepository.findById("1"));
+
+		window.table("expenseTable").requireRowCount(0);
 	}
 }
