@@ -192,4 +192,19 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 				&& LocalDate.of(2026, 9, 3).equals(updatedExpense.getDate())));
 	}
 
+	@Test
+	public void selectingExpenseShouldPopulateFormFields() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 4));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(expense)));
+
+		window.table("expenseTable").selectRows(0);
+
+		window.textBox("idTextBox").requireText("1");
+		window.textBox("descriptionTextBox").requireText("Coffee");
+		window.textBox("amountTextBox").requireText("3.5");
+		window.textBox("categoryTextBox").requireText("Food");
+		window.textBox("dateTextBox").requireText("2026-09-04");
+	}
+
 }
