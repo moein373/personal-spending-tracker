@@ -3,6 +3,8 @@ package com.moein.expensetracker.ui;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 
 import java.time.LocalDate;
 
@@ -205,6 +207,76 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.textBox("amountTextBox").requireText("3.5");
 		window.textBox("categoryTextBox").requireText("Food");
 		window.textBox("dateTextBox").requireText("2026-09-04");
+	}
+
+	@Test
+	public void deleteButtonShouldDoNothingWhenNoExpenseIsSelected() {
+		ExpenseController expenseController = mock(ExpenseController.class);
+		expenseTrackerFrame.setExpenseController(expenseController);
+
+		window.button(JButtonMatcher.withText("Delete")).click();
+
+		verify(expenseController, never()).deleteExpense(any(ExpenseRecord.class));
+	}
+
+	@Test
+	public void expenseRemovedShouldLeaveTableUnchangedWhenExpenseDoesNotExist() {
+		ExpenseRecord existingExpense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 4));
+
+		ExpenseRecord missingExpense = new ExpenseRecord("2", "Bus", 1.50, "Transport", LocalDate.of(2026, 9, 4));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(existingExpense)));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.expenseRemoved(missingExpense));
+
+		window.table("expenseTable").requireRowCount(1);
+
+		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-04" } });
+	}
+
+	@Test
+	public void expenseUpdatedShouldLeaveTableUnchangedWhenExpenseDoesNotExist() {
+		ExpenseRecord existingExpense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 4));
+
+		ExpenseRecord missingExpense = new ExpenseRecord("2", "Dinner", 25.00, "Food", LocalDate.of(2026, 9, 4));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(existingExpense)));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.expenseUpdated(missingExpense));
+
+		window.table("expenseTable").requireRowCount(1);
+
+		window.table("expenseTable").requireContents(new String[][] { { "1", "Coffee", "3.5", "Food", "2026-09-04" } });
+	}
+
+	@Test
+	public void addButtonShouldRemainDisabledForEachMissingRequiredField() {
+		window.textBox("descriptionTextBox").enterText("Coffee");
+		window.textBox("amountTextBox").enterText("3.50");
+		window.textBox("categoryTextBox").enterText("Food");
+		window.textBox("dateTextBox").enterText("2026-09-04");
+
+		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("descriptionTextBox").deleteText();
+
+		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+
+		window.textBox("descriptionTextBox").enterText("Coffee");
+		window.textBox("amountTextBox").deleteText();
+
+		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+
+		window.textBox("amountTextBox").enterText("3.50");
+		window.textBox("categoryTextBox").deleteText();
+
+		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+
+		window.textBox("categoryTextBox").enterText("Food");
+		window.textBox("dateTextBox").deleteText();
+
+		window.button(JButtonMatcher.withText("Add")).requireDisabled();
 	}
 
 }

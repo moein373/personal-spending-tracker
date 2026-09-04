@@ -4,17 +4,29 @@ import javax.swing.SwingUtilities;
 
 import com.mongodb.MongoClient;
 import com.moein.expensetracker.controller.ExpenseController;
-import com.moein.expensetracker.repository.mongo.ExpenseMongoRepository;
 import com.moein.expensetracker.repository.ExpenseRepository;
+import com.moein.expensetracker.repository.mongo.ExpenseMongoRepository;
 import com.moein.expensetracker.ui.ExpenseTrackerFrame;
 
 public class ExpenseTrackerApplication {
 
-	public static void main(String[] args) {
+	private final ExpenseRepository expenseRepository;
+
+	public ExpenseTrackerApplication() {
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
 
-		ExpenseRepository expenseRepository = new ExpenseMongoRepository(mongoClient);
+		this.expenseRepository = new ExpenseMongoRepository(mongoClient);
+	}
 
+	public ExpenseTrackerApplication(ExpenseRepository expenseRepository) {
+		this.expenseRepository = expenseRepository;
+	}
+
+	public static void main(String[] args) {
+		new ExpenseTrackerApplication().start();
+	}
+
+	public void start() {
 		SwingUtilities.invokeLater(() -> {
 			ExpenseTrackerFrame frame = new ExpenseTrackerFrame();
 

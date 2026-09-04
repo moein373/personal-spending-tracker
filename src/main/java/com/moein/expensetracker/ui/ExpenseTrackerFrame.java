@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import com.moein.expensetracker.controller.ExpenseController;
@@ -210,10 +209,4 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 		this.expenseController = expenseController;
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			ExpenseTrackerFrame frame = new ExpenseTrackerFrame();
-			frame.setVisible(true);
-		});
-	}
 }
