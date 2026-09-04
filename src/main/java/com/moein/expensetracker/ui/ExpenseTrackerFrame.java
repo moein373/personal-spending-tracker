@@ -93,6 +93,19 @@ public class ExpenseTrackerFrame extends JFrame implements ExpenseView {
 
 		expenseTable = new JTable(tableModel);
 		expenseTable.setName("expenseTable");
+		expenseTable.getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int selectedRow = expenseTable.getSelectedRow();
+
+				if (selectedRow >= 0) {
+					idField.setText(tableModel.getValueAt(selectedRow, 0).toString());
+					descriptionField.setText(tableModel.getValueAt(selectedRow, 1).toString());
+					amountField.setText(tableModel.getValueAt(selectedRow, 2).toString());
+					categoryField.setText(tableModel.getValueAt(selectedRow, 3).toString());
+					dateField.setText(tableModel.getValueAt(selectedRow, 4).toString());
+				}
+			}
+		});
 
 		updateButton.addActionListener(e -> {
 			ExpenseRecord expense = new ExpenseRecord(idField.getText(), descriptionField.getText(),
