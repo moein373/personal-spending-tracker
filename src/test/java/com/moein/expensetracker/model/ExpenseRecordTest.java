@@ -2,7 +2,6 @@ package com.moein.expensetracker.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
 
@@ -10,10 +9,9 @@ import org.junit.Test;
 
 public class ExpenseRecordTest {
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void constructorWithZeroAmountShouldThrow() {
-		assertThrows(IllegalArgumentException.class,
-				() -> new ExpenseRecord("Lunch", 0.0, "Food", LocalDate.of(2026, 8, 29)));
+		new ExpenseRecord("Lunch", 0.0, "Food", LocalDate.of(2026, 8, 29));
 	}
 
 	@Test
@@ -23,28 +21,24 @@ public class ExpenseRecordTest {
 		assertNotNull(expense);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void constructorWithNegativeAmountShouldThrow() {
-		assertThrows(IllegalArgumentException.class,
-				() -> new ExpenseRecord("Lunch", -1.0, "Food", LocalDate.of(2026, 8, 29)));
+		new ExpenseRecord("Lunch", -1.0, "Food", LocalDate.of(2026, 8, 29));
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void constructorWithEmptyDescriptionShouldThrow() {
-		assertThrows(IllegalArgumentException.class,
-				() -> new ExpenseRecord("", 10.0, "Food", LocalDate.of(2026, 8, 29)));
+		new ExpenseRecord("", 10.0, "Food", LocalDate.of(2026, 8, 29));
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void constructorWithWhitespaceDescriptionShouldThrow() {
-		assertThrows(IllegalArgumentException.class,
-				() -> new ExpenseRecord("   ", 10.0, "Food", LocalDate.of(2026, 8, 29)));
+		new ExpenseRecord("   ", 10.0, "Food", LocalDate.of(2026, 8, 29));
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void constructorWithNullDescriptionShouldThrow() {
-		assertThrows(IllegalArgumentException.class,
-				() -> new ExpenseRecord(null, 10.0, "Food", LocalDate.of(2026, 8, 29)));
+		new ExpenseRecord(null, 10.0, "Food", LocalDate.of(2026, 8, 29));
 	}
 
 	@Test
