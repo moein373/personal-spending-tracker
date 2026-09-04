@@ -167,6 +167,48 @@
 
 		</profile>
 
+		<profile>
+			<id>mutation-testing</id>
+
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<version>1.17.3</version>
+
+						<configuration>
+
+							<targetClasses>
+								<param>com.moein.expensetracker.model.*</param>
+								<param>com.moein.expensetracker.controller.*</param>
+								<param>com.moein.expensetracker.service.*</param>
+								<param>
+									com.moein.expensetracker.repository.mongo.*</param>
+							</targetClasses>
+
+							<targetTests>
+								<param>com.moein.expensetracker.model.*</param>
+								<param>com.moein.expensetracker.controller.*</param>
+								<param>com.moein.expensetracker.service.*</param>
+								<param>
+									com.moein.expensetracker.repository.mongo.*</param>
+							</targetTests>
+
+							<mutators>
+								<mutator>DEFAULTS</mutator>
+							</mutators>
+
+							<mutationThreshold>100</mutationThreshold>
+
+						</configuration>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 
 </project>
