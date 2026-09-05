@@ -231,6 +231,29 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
+	public void selectingExpenseWhileAdjustingShouldNotPopulateFormFields() {
+		ExpenseRecord expense = new ExpenseRecord("1", "Coffee", 3.50, "Food", LocalDate.of(2026, 9, 4));
+
+		GuiActionRunner.execute(() -> expenseTrackerFrame.showAllExpenses(Arrays.asList(expense)));
+
+		GuiActionRunner.execute(() -> {
+			window.table("expenseTable").target().getSelectionModel().setValueIsAdjusting(true);
+			window.table("expenseTable").target().setRowSelectionInterval(0, 0);
+		});
+
+		window.textBox("idTextBox").requireText("");
+		window.textBox("descriptionTextBox").requireText("");
+		window.textBox("amountTextBox").requireText("");
+		window.textBox("categoryTextBox").requireText("");
+		window.textBox("dateTextBox").requireText("");
+
+		assertEquals("", window.textBox("descriptionTextBox").target().getText());
+
+		GuiActionRunner
+				.execute(() -> window.table("expenseTable").target().getSelectionModel().setValueIsAdjusting(false));
+	}
+
+	@Test
 	public void deleteButtonShouldDoNothingWhenNoExpenseIsSelected() {
 		ExpenseController expenseController = mock(ExpenseController.class);
 		expenseTrackerFrame.setExpenseController(expenseController);
