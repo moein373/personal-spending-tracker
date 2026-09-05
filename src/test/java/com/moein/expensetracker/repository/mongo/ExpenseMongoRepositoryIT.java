@@ -31,7 +31,7 @@ public class ExpenseMongoRepositoryIT {
 
 	@Before
 	public void setup() {
-		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(27017)));
+		client = new MongoClient(new ServerAddress(mongo.getHost(), mongo.getMappedPort(27017)));
 
 		expenseRepository = new ExpenseMongoRepository(client);
 
