@@ -3,10 +3,6 @@ package com.moein.expensetracker.app;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.junit.Assert.assertNotNull;
-import com.mongodb.MongoClient;
-import com.moein.expensetracker.repository.mongo.ExpenseMongoRepository;
-
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
