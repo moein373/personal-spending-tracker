@@ -205,7 +205,11 @@ public class ExpenseTrackerFrameTest extends AssertJSwingJUnitTestCase {
 		window.textBox("categoryTextBox").setText("Food");
 		window.textBox("dateTextBox").setText("2026-09-03");
 
-		window.button(JButtonMatcher.withText("Update")).click();
+		robot().waitForIdle();
+
+		window.button(JButtonMatcher.withText("Update")).requireEnabled().click();
+
+		robot().waitForIdle();
 
 		verify(expenseController).updateExpense(argThat(updatedExpense -> "1".equals(updatedExpense.getId())
 				&& "Dinner".equals(updatedExpense.getDescription())

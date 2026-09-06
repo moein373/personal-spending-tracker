@@ -3,15 +3,27 @@ package com.moein.expensetracker.app;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
 import java.lang.reflect.InvocationTargetException;
+import java.net.InetSocketAddress;
 
 import javax.swing.SwingUtilities;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.moein.expensetracker.repository.ExpenseRepository;
 
+import de.bwaldvogel.mongo.MongoServer;
+import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
+
 public class ExpenseTrackerApplicationTest {
+
+	@After
+	public void clearMongoProperties() {
+		System.clearProperty("mongodb.host");
+		System.clearProperty("mongodb.port");
+	}
 
 	@Test
 	public void shouldCreateApplicationWithRepository() {
@@ -24,7 +36,6 @@ public class ExpenseTrackerApplicationTest {
 
 	@Test
 	public void shouldStartApplicationWithInjectedRepository() throws InvocationTargetException, InterruptedException {
-
 		ExpenseRepository expenseRepository = mock(ExpenseRepository.class);
 
 		ExpenseTrackerApplication application = new ExpenseTrackerApplication(expenseRepository);
@@ -46,15 +57,19 @@ public class ExpenseTrackerApplicationTest {
 
 	@Test
 	public void shouldRunMainMethod() throws Exception {
+		MongoServer server = new MongoServer(new MemoryBackend());
+		InetSocketAddress serverAddress = server.bind();
 
-		Thread applicationThread = new Thread(() -> ExpenseTrackerApplication.main(new String[0]));
+		System.setProperty("mongodb.host", serverAddress.getHostString());
+		System.setProperty("mongodb.port", String.valueOf(serverAddress.getPort()));
 
-		applicationThread.start();
+		ExpenseTrackerApplication.main(new String[0]);
 
-		Thread.sleep(1000);
+		SwingUtilities.invokeAndWait(() -> {
+		});
 
-		applicationThread.interrupt();
+		assertNotNull(server);
 
-		assertNotNull(applicationThread);
+		server.shutdownNow();
 	}
 }
