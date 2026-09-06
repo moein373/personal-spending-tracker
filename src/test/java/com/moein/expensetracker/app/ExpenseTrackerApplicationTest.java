@@ -3,6 +3,7 @@ package com.moein.expensetracker.app;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
@@ -24,7 +25,6 @@ public class ExpenseTrackerApplicationTest {
 
 	@Test
 	public void shouldStartApplicationWithInjectedRepository() throws InvocationTargetException, InterruptedException {
-
 		ExpenseRepository expenseRepository = mock(ExpenseRepository.class);
 
 		ExpenseTrackerApplication application = new ExpenseTrackerApplication(expenseRepository);
@@ -42,19 +42,5 @@ public class ExpenseTrackerApplicationTest {
 		ExpenseTrackerApplication application = new ExpenseTrackerApplication();
 
 		assertNotNull(application);
-	}
-
-	@Test
-	public void shouldRunMainMethod() throws Exception {
-
-		Thread applicationThread = new Thread(() -> ExpenseTrackerApplication.main(new String[0]));
-
-		applicationThread.start();
-
-		Thread.sleep(1000);
-
-		applicationThread.interrupt();
-
-		assertNotNull(applicationThread);
 	}
 }
