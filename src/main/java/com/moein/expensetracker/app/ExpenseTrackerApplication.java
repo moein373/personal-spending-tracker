@@ -13,7 +13,10 @@ public class ExpenseTrackerApplication {
 	private final ExpenseRepository expenseRepository;
 
 	public ExpenseTrackerApplication() {
-		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		String host = System.getProperty("mongodb.host", "localhost");
+		int port = Integer.parseInt(System.getProperty("mongodb.port", "27017"));
+
+		MongoClient mongoClient = new MongoClient(host, port);
 
 		this.expenseRepository = new ExpenseMongoRepository(mongoClient);
 	}
