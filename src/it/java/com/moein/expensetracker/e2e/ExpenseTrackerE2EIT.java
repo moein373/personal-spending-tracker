@@ -14,8 +14,11 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 import com.moein.expensetracker.controller.ExpenseController;
 import com.moein.expensetracker.model.ExpenseRecord;
 import com.moein.expensetracker.repository.ExpenseRepository;
@@ -24,6 +27,7 @@ import com.moein.expensetracker.ui.ExpenseTrackerFrame;
 
 public class ExpenseTrackerE2EIT {
 
+	private MongoDBContainer mongo;
 	private MongoClient mongoClient;
 	private ExpenseRepository expenseRepository;
 	private ExpenseTrackerFrame expenseTrackerFrame;
@@ -32,9 +36,12 @@ public class ExpenseTrackerE2EIT {
 
 	@Before
 	public void setUp() {
+		mongo = new MongoDBContainer(DockerImageName.parse("mongo:4.4.3"));
+		mongo.start();
+
 		robot = BasicRobot.robotWithNewAwtHierarchy();
 
-		mongoClient = new MongoClient("localhost", 27017);
+		mongoClient = new MongoClient(new ServerAddress(mongo.getHost(), mongo.getMappedPort(27017)));
 
 		expenseRepository = new ExpenseMongoRepository(mongoClient);
 
@@ -75,6 +82,10 @@ public class ExpenseTrackerE2EIT {
 
 		if (mongoClient != null) {
 			mongoClient.close();
+		}
+
+		if (mongo != null) {
+			mongo.stop();
 		}
 	}
 
