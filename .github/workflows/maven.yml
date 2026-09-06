@@ -8,7 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    
     steps:
       - uses: actions/checkout@v5
         with:
@@ -33,7 +32,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Upload coverage to Coveralls
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           file: target/site/jacoco/jacoco.xml
